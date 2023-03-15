@@ -15,6 +15,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
+    //      http://localhost:8080/users/getAll
+    //proiectu tre sa fie activ sa mearga
     @GetMapping( "/getAll")
     @ResponseBody
     public List<User> retrieveUsers() {

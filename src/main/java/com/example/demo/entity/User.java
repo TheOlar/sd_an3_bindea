@@ -3,12 +3,12 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "person")
+@Table(name = "users")
 
 public class User {
 
     @Id
-    @Column(name="cnp")
+    @Column(name="user_id")
     private Long userId;
 
     @Column(name = "l_name")
