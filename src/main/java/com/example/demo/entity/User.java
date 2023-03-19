@@ -2,6 +2,8 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 
@@ -19,6 +21,16 @@ public class User {
 
     @Column(name = "e_mail")
     private String email;
+
+
+
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+    private Set<Answer> answerSet;
+
+
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+    private Set<Question> questionSet;
+
 
 
 

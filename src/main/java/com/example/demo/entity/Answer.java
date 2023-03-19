@@ -1,10 +1,10 @@
 package com.example.demo.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 
@@ -16,7 +16,7 @@ public class Answer {
     @Column(name="answer_id")
     private Long answerId;
 
-    @Column(name="author")
+    @Column(name="author", insertable=false, updatable=false)
     private Long authorId;
 
 
@@ -30,27 +30,45 @@ public class Answer {
     private String picture;
 
 
+    @Column(name="question_id", insertable=false, updatable=false)
+    private Long questionId;
+
+
+
     public Answer() {
 
     }
 
-    public Answer(Long answerId, Long authorId, String text, Date creationTime, String picture) {
+    public Answer(Long answerId, Long authorId, String text, Date creationTime, String picture, Long questionId) {
         this.answerId = answerId;
         this.authorId = authorId;
         this.text = text;
         this.creationTime = creationTime;
         this.picture = picture;
+        this.questionId = questionId;
     }
 
 
 
-    public Answer(Long answerId, Long authorId, String text, Date creationTime) {
+    public Answer(Long answerId, Long authorId, String text, Date creationTime, Long questionId) {
         this.answerId = answerId;
         this.authorId = authorId;
         this.text = text;
         this.creationTime = creationTime;
-
+        this.questionId = questionId;
     }
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="question_id", nullable=false)
+    //@OnDelete(action = OnDeleteAction.CASCADE)
+    private Question question;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="author", nullable=false)
+   // @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
 
     public Long getAnswerId() {
         return answerId;
@@ -92,6 +110,14 @@ public class Answer {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public Long getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Long questionId) {
+        this.questionId = questionId;
     }
 
 }

@@ -1,12 +1,12 @@
 package com.example.demo.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "question")
@@ -16,7 +16,7 @@ public class Question {
     @Column(name="question_id")
     private Long questionId;
 
-    @Column(name="author")
+    @Column(name="author", insertable=false, updatable=false)
     private Long authorId;
 
     @Column(name="title")
@@ -31,6 +31,15 @@ public class Question {
     @Column(name="picture")
     private String picture;
 
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="author", nullable=false)
+   // @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
+
+    @OneToMany(mappedBy="question", cascade = CascadeType.ALL)
+    private Set<Answer> answerSet;
 
     public Question() {
 
