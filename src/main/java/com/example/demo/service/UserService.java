@@ -45,13 +45,4 @@ public class UserService {
 
 
 
-    public boolean updateUser(User user) {
-        User a = userRepository.save(user);
-        if(a!=null) {
-            return true;
-        }
-        return false;
-
-    }
-
 }

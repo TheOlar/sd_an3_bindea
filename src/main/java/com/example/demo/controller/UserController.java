@@ -69,7 +69,7 @@ public class UserController {
     @ResponseBody
     public String updateUser(@RequestBody User user){
 
-        if(userService.updateUser(user)) {
+        if(userService.saveUser(user)) {
             return "Success";
         }
         return "Fail";
