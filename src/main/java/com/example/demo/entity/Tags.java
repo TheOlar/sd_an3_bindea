@@ -1,20 +1,12 @@
 package com.example.demo.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
-/**
- *
- * create table tags (
- * tag varchar(20) not null,
- * question_id int not null,
- * foreign key (question_id) references question(question_id)
- * );
- *
- * */
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "tags")
@@ -24,19 +16,21 @@ public class Tags {
     @Column(name="tag_id")
     private Long tagId;
 
-    @Column(name = "tag_name")
-    private String tagName;
+    @Column
+    private String title;
 
-    @Column(name="question_id")
-    private Long questionId;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "tags")
+    private List<Question> questions = new ArrayList<>();
+
 
     public Tags() {
     }
 
-    public Tags(Long tagId, String tagName, Long questionId) {
+    public Tags(Long tagId, String title, List<Question> questions) {
         this.tagId = tagId;
-        this.tagName = tagName;
-        this.questionId = questionId;
+        this.title = title;
+        this.questions = questions;
     }
 
 
@@ -48,19 +42,19 @@ public class Tags {
         this.tagId = tagId;
     }
 
-    public String getTagName() {
-        return tagName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Long getQuestionId() {
-        return questionId;
+    public List<Question> getQuestions() {
+        return questions;
     }
 
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 }

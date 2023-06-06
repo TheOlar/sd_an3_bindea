@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -13,80 +14,89 @@ import java.util.Date;
 public class Answer {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="answer_id")
-    private Long answerId;
+    private Integer id;
 
-    @Column(name="author", insertable=false, updatable=false)
-    private Long authorId;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="question_id")
+    private Question questionId;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "author")
+    private User author;
 
     @Column(name="text_answer")
     private String text;
 
     @Column(name="creation")
-    private Date creationTime;
+    private Timestamp timeStamp;
+
+    @Column(name="updated")
+    private Timestamp updated;
 
     @Column(name="picture")
-    private String picture;
+    private String image;
 
+    public Integer getRating() {
+        return rating;
+    }
 
-    @Column(name="question_id", insertable=false, updatable=false)
-    private Long questionId;
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
 
-
+    @Column (name="vote")
+    private Integer rating;
 
     public Answer() {
 
     }
-
-    public Answer(Long answerId, Long authorId, String text, Date creationTime, String picture, Long questionId) {
-        this.answerId = answerId;
-        this.authorId = authorId;
+    public Answer(Integer id, Question questionId, User author, String text, Timestamp timeStamp, String image) {
+        this.id = id;
+        this.questionId = questionId;
+        this.author = author;
         this.text = text;
-        this.creationTime = creationTime;
-        this.picture = picture;
+        this.timeStamp = timeStamp;
+        this.image = image;
+    }
+
+    public Answer(Integer id, Question questionId, User author, String text, Timestamp timeStamp, Timestamp updated, String image) {
+        this.id = id;
+        this.questionId = questionId;
+        this.author = author;
+        this.text = text;
+        this.timeStamp = timeStamp;
+        this.updated = updated;
+        this.image = image;
+    }
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Question getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Question questionId) {
         this.questionId = questionId;
     }
 
-
-
-    public Answer(Long answerId, Long authorId, String text, Date creationTime, Long questionId) {
-        this.answerId = answerId;
-        this.authorId = authorId;
-        this.text = text;
-        this.creationTime = creationTime;
-        this.questionId = questionId;
+    public User getAuthor() {
+        return author;
     }
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="question_id", nullable=false)
-    //@OnDelete(action = OnDeleteAction.CASCADE)
-    private Question question;
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="author", nullable=false)
-   // @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
-
-    public Long getAnswerId() {
-        return answerId;
+    public void setAuthor(User author) {
+        this.author = author;
     }
-
-    public void setAnswerId(Long answerId) {
-        this.answerId = answerId;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
-
 
     public String getText() {
         return text;
@@ -96,28 +106,27 @@ public class Answer {
         this.text = text;
     }
 
-    public Date getCreationTime() {
-        return creationTime;
+    public Timestamp getTimeStamp() {
+        return timeStamp;
     }
 
-    public void setCreationTime(Date creationTime) {
-        this.creationTime = creationTime;
+    public void setTimeStamp(Timestamp timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
-    public String getPicture() {
-        return picture;
+    public Timestamp getUpdated() {
+        return updated;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setUpdated(Timestamp updated) {
+        this.updated = updated;
     }
 
-    public Long getQuestionId() {
-        return questionId;
+    public String getImage() {
+        return image;
     }
 
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
+    public void setImage(String image) {
+        this.image = image;
     }
-
 }
